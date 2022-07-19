@@ -4,13 +4,30 @@
     android:layout_width="match_parent"
     android:id="@+id/score"
     android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/your"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Congragultaion"
+        android:textColor="#FCD586"
+        style="bold"
+        android:textAllCaps="false"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:padding="3dp"/>
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/tropy"/>
 
     <TextView
         android:id="@+id/yourscore"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Your Score"
-        android:textColor="@color/purple_200"
+        android:textColor="#FCD586"
         style="bold"
         android:textAllCaps="false"
         android:textSize="25sp"

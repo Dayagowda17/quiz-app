@@ -1,3 +1,4 @@
+
 package com.example.quiz;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
@@ -23,17 +25,21 @@ public class QuizQuestion extends AppCompatActivity {
     int currentScore=0;
     int questionAttempted=1;
     int currentPos;
+    int count =1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_question);
+
         questionsTV=findViewById(R.id.tv_Questions);
         questionNumberTv=findViewById(R.id.questionsAttempted1);
         option1=findViewById(R.id.bt_option1);
         option2=findViewById(R.id.bt_option2);
         option3=findViewById(R.id.bt_option3);
         option4=findViewById(R.id.bt_option4);
+
+
         quizModalArrayList=new ArrayList<>();
         random=new Random();
         getQuizQuestion(quizModalArrayList);
@@ -91,9 +97,19 @@ public class QuizQuestion extends AppCompatActivity {
         View bottomsheetView = LayoutInflater.from(getApplicationContext()).inflate(R.layout.score,(LinearLayout)findViewById(R.id.score));
         TextView scoreTv=bottomsheetView.findViewById(R.id.yourscore);
         Button restartQuiz=bottomsheetView.findViewById(R.id.restart);
-        //err = (TextView)findViewById(R.id.et_name);
-      //  err.setText(" ");
-        scoreTv.setText("Your Score is\n"+currentScore+"/10");
+        String username = getIntent().getStringExtra("username");
+        Database quiz = new Database(this, "quiz.db",null,1);
+        scoreTv.setText(username+"\nYour Score is\n"+currentScore+"/10");
+        try{
+            long result = quiz.add_marks(username,""+currentScore);
+            if(result!=-1) {
+                Toast.makeText(QuizQuestion.this, "Information added to database", Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(QuizQuestion.this, "Some error occurred", Toast.LENGTH_SHORT).show();
+        }
+
 
         restartQuiz.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,11 +135,12 @@ public class QuizQuestion extends AppCompatActivity {
             showBottomSheet();
         }
         else {
-            questionsTV.setText(quizModalArrayList.get(currentPos).getQuestion());
+            questionsTV.setText(""+count+". "+quizModalArrayList.get(currentPos).getQuestion());
             option1.setText(quizModalArrayList.get(currentPos).getOption1());
             option2.setText(quizModalArrayList.get(currentPos).getOption2());
             option3.setText(quizModalArrayList.get(currentPos).getOption3());
             option4.setText(quizModalArrayList.get(currentPos).getOption4());
+            count++;
         }
     }
 
